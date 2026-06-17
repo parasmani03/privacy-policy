@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Account Deletion – Parasmani Sharma</title>
+  <meta name="description" content="Request the permanent deletion of your account and all associated data for applications developed by Parasmani Sharma." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Add print overrides to only print the success card */
+    @media print {
+      body {
+        background: #ffffff;
+        color: #000000;
+        padding: 0;
+      }
+      .back-link, .hero, .btn-group, footer, .footer {
+        display: none !important;
+      }
+      .card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .ref-box {
+        border: 1px solid #000000 !important;
+        background: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Back to privacy policy -->
+    <a href="index.html" class="back-link" id="back_to_policy_link">
+      <span>←</span> Back to Privacy Policy
+    </a>
+
+    <!-- HERO Header -->
+    <header class="hero" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 60%, #991b1b 100%);">
+      <span class="hero-icon">🗑️</span>
+      <h1>Account Deletion Request</h1>
+      <p class="tagline">Permanently delete your account and all associated data</p>
+      <div class="meta">
+        <span>⚠️ Irreversible Action</span>
+        <span>🕒 Processed within 7 Days</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- WARNING CARD -->
+      <section class="card" id="form_section">
+        <div class="warning-box">
+          <h4>
+            <span>⚠️</span> Warning: This is Permanent
+          </h4>
+          <p>
+            Deleting your account is irreversible. Once processed, you will lose access to the application immediately, and all associated business information, records, settings, and historical data will be permanently wiped.
+          </p>
+        </div>
+
+        <div class="card-title">
+          <div class="icon" style="background: var(--red-light); color: var(--red);">📝</div>
+          Enter Details to Proceed
+        </div>
+
+        <form id="deletion_form" onsubmit="handleFormSubmit(event)">
+          <!-- App Selection -->
+          <div class="form-group">
+            <label for="app_select" class="form-label">Select Application *</label>
+            <select id="app_select" class="form-select" required onchange="handleAppChange(this.value)">
+              <option value="" disabled selected>Choose the application...</option>
+              <option value="zaver_pro">Zaver Pro (Jewellery Shop SaaS)</option>
+              <option value="other">Other Application</option>
+            </select>
+          </div>
+
+          <!-- Shop Name (Shown conditionally for Zaver Pro) -->
+          <div class="form-group" id="shop_name_group" style="display: none;">
+            <label for="shop_name_input" class="form-label">Shop Name / Business Name *</label>
+            <input type="text" id="shop_name_input" class="form-input" placeholder="e.g. Parasmani Jewellers" />
+          </div>
+
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name_input" class="form-label">Full Name *</label>
+            <input type="text" id="name_input" class="form-input" placeholder="Your registered name" required />
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email_input" class="form-label">Registered Email Address *</label>
+            <input type="email" id="email_input" class="form-input" placeholder="e.g. name@example.com" required oninput="validateForm()" />
+          </div>
+
+          <!-- Reason for Deletion -->
+          <div class="form-group">
+            <label for="reason_select" class="form-label">Primary Reason for Deletion</label>
+            <select id="reason_select" class="form-select">
+              <option value="" selected>Please select a reason (optional)</option>
+              <option value="no_longer_needed">No longer using the application</option>
+              <option value="switching_alternative">Switching to another alternative</option>
+              <option value="security_privacy">Privacy or security concerns</option>
+              <option value="pricing">Pricing or subscription costs</option>
+              <option value="other">Other reason</option>
+            </select>
+          </div>
+
+          <!-- Textarea for comments -->
+          <div class="form-group">
+            <label for="comments_input" class="form-label">Additional Comments / Feedback</label>
+            <textarea id="comments_input" class="form-textarea" placeholder="Help us understand how we could have improved your experience..."></textarea>
+          </div>
+
+          <!-- Acknowledgment Checkbox -->
+          <div class="form-group last">
+            <label class="checkbox-label" for="confirm_checkbox">
+              <input type="checkbox" id="confirm_checkbox" required onchange="validateForm()" />
+              <span>I confirm that I want to delete my account and erase all my data. I understand that this request is permanent and cannot be undone once completed.</span>
+            </label>
+          </div>
+
+          <!-- Buttons -->
+          <div class="btn-group">
+            <a href="index.html" class="btn btn-secondary" id="cancel_button">Cancel</a>
+            <button type="submit" id="submit_button" class="btn btn-danger" disabled>
+              Send Deletion Request
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- SUCCESS CARD (Initially hidden) -->
+      <section class="card success-card" id="success_section" style="display: none;">
+        <div class="success-icon-wrap">
+          <span>✓</span>
+        </div>
+        <h2>Request Received Successfully!</h2>
+        <p>
+          Your account deletion request has been submitted and queued for manual verification. 
+          To prevent unauthorized or accidental deletions, a verification link has also been sent to your email address. 
+          Please click that link to confirm your request.
+        </p>
+        <p>
+          Once verified, our support team will process the deletion and permanently erase all data within <strong>7 business days</strong>.
+        </p>
+
+        <div class="ref-box">
+          <span class="ref-label">Request Reference ID</span>
+          <span class="ref-id" id="reference_id_span">DEL-XXXXX</span>
+        </div>
+
+        <div class="btn-group" style="max-width: 360px; margin: 0 auto;">
+          <button onclick="window.print()" class="btn btn-secondary" id="print_button">
+            🖨️ Print Confirmation
+          </button>
+          <a href="index.html" class="btn btn-danger" id="done_button" style="background: var(--green);">
+            Done
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© 2026 <strong>Parasmani Sharma</strong>. All rights reserved.</p>
+      <p>Data deletion requests are governed by our Privacy Policy terms and processed securely.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Handles conditional layout changes based on app selected
+    function handleAppChange(value) {
+      const shopNameGroup = document.getElementById('shop_name_group');
+      const shopNameInput = document.getElementById('shop_name_input');
+      
+      if (value === 'zaver_pro') {
+        shopNameGroup.style.display = 'block';
+        shopNameInput.required = true;
+      } else {
+        shopNameGroup.style.display = 'none';
+        shopNameInput.required = false;
+        shopNameInput.value = '';
+      }
+      validateForm();
+    }
+
+    // Handles form validations
+    function validateForm() {
+      const appSelect = document.getElementById('app_select');
+      const nameInput = document.getElementById('name_input');
+      const emailInput = document.getElementById('email_input');
+      const confirmCheckbox = document.getElementById('confirm_checkbox');
+      const submitButton = document.getElementById('submit_button');
+      
+      const appValue = appSelect.value;
+      const nameValue = nameInput.value.trim();
+      const emailValue = emailInput.value.trim();
+      const checkboxChecked = confirmCheckbox.checked;
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isEmailValid = emailRegex.test(emailValue);
+
+      // Check conditional shop name
+      let isShopNameValid = true;
+      if (appValue === 'zaver_pro') {
+        const shopNameInput = document.getElementById('shop_name_input');
+        isShopNameValid = shopNameInput.value.trim().length > 0;
+      }
+
+      // Enable/disable submit button
+      if (appValue && nameValue && isEmailValid && checkboxChecked && isShopNameValid) {
+        submitButton.disabled = false;
+      } else {
+        submitButton.disabled = true;
+      }
+    }
+
+    // Attach listeners for key inputs
+    document.getElementById('name_input').addEventListener('input', validateForm);
+    document.getElementById('shop_name_input').addEventListener('input', validateForm);
+
+    // Form submission simulation
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      // Final validate
+      const submitButton = document.getElementById('submit_button');
+      if (submitButton.disabled) return;
+
+      // Disable inputs while submitting
+      submitButton.disabled = true;
+      submitButton.innerText = "Submitting Request...";
+      
+      // Generate a random Reference ID
+      const chars = '0123456789ABCDEF';
+      let refId = 'DEL-';
+      for (let i = 0; i < 6; i++) {
+        refId += chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      // Simulate network request duration
+      setTimeout(() => {
+        // Update Ref ID text
+        document.getElementById('reference_id_span').innerText = refId;
+        
+        // Hide form, show success card
+        document.getElementById('form_section').style.display = 'none';
+        document.getElementById('success_section').style.display = 'block';
+        
+        // Scroll to top of window
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
